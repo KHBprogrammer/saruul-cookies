@@ -1,24 +1,39 @@
-import logo from './logo.svg';
-import './App.css';
+import logo from "./logo.svg";
+import "./App.css";
+import { Box } from "@mui/system";
+import Register from "./pages/register";
+import { BrowserRouter as Router, Route, Navigate, Routes } from "react-router-dom";
+import { useCookies } from "react-cookie";
+import Home from "./pages/home";
+import Login from "./pages/login";
 
 function App() {
+  const [first, setFirst] = useCookies(["user"]);
+  console.log(`
+  sshasladlfjaslkdjflkasjdflkjsadlkf
+  
+  `);
+  console.log(first);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Box>
+      <Router>
+        <Routes>
+          {first && first.authenticated ? (
+            <>
+              <Route element={<Home />} path="/" />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </>
+          ) : (
+            <>
+              <Route element={<Register />} path="/register" />
+              <Route element={<Login />} path="/login" />
+
+              <Route path="*" element={<Navigate to="/login" replace />} />
+            </>
+          )}
+        </Routes>
+      </Router>
+    </Box>
   );
 }
 

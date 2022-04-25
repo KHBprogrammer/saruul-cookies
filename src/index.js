@@ -1,13 +1,23 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { ThemeProvider } from "@emotion/react";
+import { createTheme } from "@mui/material";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+import { CookiesProvider } from "react-cookie";
+
+const theme = createTheme({ palette: { mode: "light", primary: { main: "#000000", light: "#00000042" } } });
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <App />
+    <CookiesProvider>
+      <ThemeProvider theme={theme}>
+        <App />
+      </ThemeProvider>
+    </CookiesProvider>
   </React.StrictMode>
 );
 
