@@ -9,8 +9,8 @@ export default function Register(props) {
   const [lastName, setLastName] = useState("");
   const [name, setName] = useState("");
   const [date, setDate] = useState("");
-  const [gender, setGender] = useState();
-  const [email, setEmail] = useState();
+  const [gender, setGender] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [phone, setPhone] = useState("");
   const [user, setUser] = useCookies(["user"]);
@@ -92,7 +92,7 @@ export default function Register(props) {
             setPassword(e.target.value);
           }}
           placeholder="************"
-          error={checkPasswordLevel(password) < 3}
+          error={password && checkPasswordLevel(password) < 3}
           helperText={
             checkPasswordLevel(password) === 3
               ? ""
@@ -134,22 +134,36 @@ export default function Register(props) {
         <Button
           variant="contained"
           onClick={() => {
-            setNoSubmit(!noSubmit);
-            alert(validator.isMobilePhoneLocales(phone)); // if (checkPasswordLevel(password) === 3 && name && lastName && validator.isEmail(email) && validator.isMobilePhoneLocales(phone)) {
-            //   setUser("user", {
-            //     name,
-            //     lastName,
-            //     date,
-            //     gender,
-            //     email,
-            //     password,
-            //     phone
-            //   });
-            //   setUser("authenticated", "");
-            //   navigate("/login");
-            // } else {
-            //   alert("Талбаруудыг бүрэн зөв бөглөнө үү");
-            // }
+            setNoSubmit(false);
+            if (checkPasswordLevel(password) === 3 && name && lastName && validator.isEmail(email) && validator.isMobilePhone(phone)) {
+              setUser("user", {
+                name,
+                lastName,
+                date,
+                gender,
+                email,
+                password,
+                phone
+              });
+              setUser("authenticated", "");
+              navigate("/login");
+            } else {
+              let errors = [];
+              console.log(errors);
+              if (!(checkPasswordLevel(password) === 3)) errors.push("Нууц үг шаардлага хангахгүй");
+              console.log(errors);
+              if (!name) errors.push("Нэр байхгүй");
+              console.log(errors);
+              if (!lastName) errors.push("Овог байхгүй");
+              console.log(errors);
+              if (!gender) errors.push("Хүйс ороогүй");
+              console.log(errors);
+              if (!validator.isEmail(email)) errors.push("Имейл буруу");
+              console.log(errors);
+              if (!validator.isMobilePhone(phone)) errors.push("Утасны дугаар буруу");
+              console.log(errors);
+              alert(errors.join(", ") + " байна");
+            }
           }}>
           Бүртгүүлэх
         </Button>
